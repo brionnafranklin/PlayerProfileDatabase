@@ -14,6 +14,7 @@ int main()
 
 		Player player(name, score);
 
+
 }
 
 void save(std::ofstream& out)
