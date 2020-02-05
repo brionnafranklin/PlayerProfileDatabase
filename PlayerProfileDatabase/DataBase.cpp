@@ -5,15 +5,15 @@
 DataBase::DataBase()
 {
 	Player Bri("Bri", 110);
-	Player Sarah("Sarah", 75);
-	Player Josh("Josh", 83);
 	Player Jax("Jax", 92);
+	Player Josh("Josh", 69);
+	Player Sarah("Sarah", 75);
 
 	m_players = new Player[m_playerCount]{ Bri };
 
-	addPlayer(Sarah);
-	addPlayer(Josh);
 	addPlayer(Jax);
+	addPlayer(Josh);
+	addPlayer(Sarah);
 }
 
 DataBase::~DataBase()
@@ -58,19 +58,18 @@ void DataBase::addPlayer(Player newPlayer)
 
 void DataBase::bubbleSort()
 {
-	bool done = false;
+	bool sorted = false;
 
-	while (!done)
+	while (!sorted)
 	{
-		done = true;
+		sorted = true;
 		for (int i = 0; i < m_playerCount - 1; i++)
 		{
 			if (strcmp(m_players[i].m_name, m_players[i + 1].m_name) > 0)
 			{
 				swap(m_players, i, i + 1);
 
-				done = false;
-
+				sorted = false;
 			}
 		}
 	}
@@ -78,13 +77,13 @@ void DataBase::bubbleSort()
 
 void DataBase::swap(Player * players, int n, int k)
 {
-	char temp[30];
+	Player temp;
 
-	strcpy_s(temp, players[n].m_name);
+	temp = players[n];
 
-	strcpy_s(players[n].m_name, players[k].m_name);
+	players[n] = players[k];
 
-	strcpy_s(players[k].m_name, temp);
+	players[k] = temp;
 }
 
 void DataBase::getCommand()
@@ -94,7 +93,7 @@ void DataBase::getCommand()
 	int inputint = 0;
 
 	std::cout << "Enter a Command" << std::endl;
-	std::cout << "search, save, new, exit" << std::endl;
+	std::cout << "edit, save, new, exit" << std::endl;
 
 	//Clear the input buffer, ready for player input
 	std::cin.clear();
@@ -112,9 +111,9 @@ void DataBase::getCommand()
 		gameover = true;
 		return;
 	}
-	else if (strcmp(input, "search") == 0)
+	else if (strcmp(input, "edit") == 0)
 	{
-		search();
+		edit();
 	}
 	else if (strcmp(input, "new") == 0)
 	{
@@ -127,13 +126,13 @@ void DataBase::getCommand()
 	}
 }
 
-void DataBase::search()
+void DataBase::edit()
 {
 	char input[50] = "\0";
 	int inputint = 0;
 	int index = 0;
 
-	std::cout << "Enter the name of the player you're searching." << std::endl;
+	std::cout << "Enter the name of the player to search for." << std::endl;
 
 	//Clear the input buffer, ready for player input
 	std::cin.clear();
@@ -143,32 +142,31 @@ void DataBase::search()
 	index = binarySearch(input);
 	if (index != -1) {
 
-		std::cout << "Name: " << m_players[index].m_name << std::endl;
-		std::cout << "Score: " << m_players[index].m_score << std::endl;
+		std::cout << m_players[index].m_name << m_players[index].m_score << std::endl;
 
-		std::cout << "Would you like to alter this Profile Yes/No" << std::endl;
+		std::cout << "Would you like to alter this profile (yes/no)" << std::endl;
 		std::cin.clear();
 		std::cin >> input;
-		if (strcmp(input, "Yes") == 0)
+		if (strcmp(input, "yes") == 0)
 		{
-			std::cout << "Please Choose a new Name For this Profile " << std::endl;
-			std::cout << "New Name:" << std::endl;;
+			std::cout << "Choose a new name for this profile " << std::endl;
+			std::cout << "New name:" << std::endl;;
 			std::cin >> input;
 			m_players[index].setName(input);
-			std::cout << "Please Choose a new Score For this Profile";
-			std::cout << "New Score:";
+			std::cout << "Choose a new score For this profile" << std::endl;
+			std::cout << "New score:";
 			std::cin >> inputint;
 			m_players[index].setScore(inputint);
 			return;
 		}
-		else if (strcmp(input, "No") == 0)
+		else if (strcmp(input, "no") == 0)
 		{
 			return;
 		}
 		else
 		{
 			system("CLS");
-			std::cout << "Invalid Input" << std::endl;
+			std::cout << "Invalid input" << std::endl;
 		}
 	}
 	else
@@ -250,7 +248,7 @@ bool DataBase::load()
 	m_players = m_tempPlayers;
 
 
-	std::cout << "Load Successful press any key to continue" << std::endl;
+	std::cout << "Load successful." << std::endl;
 	system("pause");
 	system("CLS");
 	return true;
@@ -261,7 +259,7 @@ void DataBase::newPlayer()
 	char input[50] = "\0";
 	int inputint = 0;
 
-	std::cout << "Enter a Name of a existing player to find and edit the score of or a player you wish to create." << std::endl;
+	std::cout << "Enter a name for the player you wish to create." << std::endl;
 
 	//Clear the input buffer, ready for player input
 	std::cin.clear();
@@ -269,12 +267,12 @@ void DataBase::newPlayer()
 
 	std::cin >> input;
 
-	std::cout << "Generating New Profile" << std::endl;
+	std::cout << "Generating new profile" << std::endl;
 	std::cout << "New Name: " << input << std::endl;
 	//std::cin >> input;
 
-	std::cout << "Please Choose a new Score For this Profile" << std::endl;
-	std::cout << "New Score: ";
+	std::cout << "Please choose a new score For this profile" << std::endl;
+	std::cout << "New Score: " << std::endl;
 	std::cin >> inputint;
 
 	Player newplayer(input, inputint);

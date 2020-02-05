@@ -20,7 +20,7 @@ private:
 	Player* m_players;
 
 	void getCommand();
-	void search();
+	void edit();
 	void save();
 	bool load();
 	void newPlayer();
