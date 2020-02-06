@@ -2,79 +2,111 @@
 #include "DataBase.h"
 #include <iostream>
 
+//creates default players and adds them to the database
 DataBase::DataBase()
 {
+	//creates 4 players and gives them each a score
 	Player Bri("Bri", 110);
 	Player Jax("Jax", 92);
 	Player Josh("Josh", 69);
 	Player Sarah("Sarah", 75);
 
+	//creates an array of players that contains the player Bri
 	m_players = new Player[m_playerCount]{ Bri };
 
+	//adds the other 3 players to the array
 	addPlayer(Jax);
 	addPlayer(Josh);
 	addPlayer(Sarah);
 }
 
+//default deconstucter
 DataBase::~DataBase()
 {
 }
 
+//calls the main functions; loops until you exit the game
 void DataBase::start()
 {
+	//loads the save file if one exists
 	load();
+	//loops until the game loads
 	while (!gameover)
 	{
+		//sorts the players by letter
 		bubbleSort();
+		//prints the players in the database along with their scores
 		draw();
+		//takes in input from the user and calls the appropriate function based on it
 		getCommand();
+		//clears the console
 		system("CLS");
 	}
+	//saves the players in the database to a save file
 	save();
 }
 
+//prints the players in the database along with their scores
 void DataBase::draw()
 {
+	//iterate through the array
 	for (int i = 0; i < m_playerCount; i++)
 	{
+		//print each player's name " - " and their score
 		std::cout << m_players[i].m_name << " - " << m_players[i].m_score << std::endl;
 	}
 }
 
+//adds a new player the the array
 void DataBase::addPlayer(Player newPlayer)
 {
+	//creates a player array 1 bigger than the original
 	Player* temparr = new Player[m_playerCount + 1];
+	//iterates through the array
 	for (int i = 0; i < m_playerCount; i++)
 	{
+		//fills the array with the what was in the old array
 		temparr[i] = m_players[i];
 	}
 
+	//puts the new player in the last slot
 	temparr[m_playerCount] = newPlayer;
 
+	//increases the m_playerCount by 1
 	m_playerCount++;
 
+	//sets old array equal to the new one
 	m_players = temparr;
 }
 
+//sorts the players by letter
 void DataBase::bubbleSort()
 {
+	//creates a bool thats false by default
 	bool sorted = false;
 
+	//loops until sorted returns true
 	while (!sorted)
 	{
+		//set sorted true
 		sorted = true;
+		//iterate through the array
 		for (int i = 0; i < m_playerCount - 1; i++)
 		{
+			//checks to see if the name it is currently on is in order according to the one after it
 			if (strcmp(m_players[i].m_name, m_players[i + 1].m_name) > 0)
 			{
+				//switches the player with the one after it
 				swap(m_players, i, i + 1);
 
+				//sets sorted to false
 				sorted = false;
 			}
 		}
 	}
 }
 
+//switches 2 players' positions in the array
 void DataBase::swap(Player * players, int n, int k)
 {
 	Player temp;
@@ -86,12 +118,14 @@ void DataBase::swap(Player * players, int n, int k)
 	players[k] = temp;
 }
 
+//takes in input from the user and calls the appropriate function based on it
 void DataBase::getCommand()
 {
 	//Create the input buffer
 	char input[50] = "\0";
 	int inputint = 0;
 
+	//prints a message to the console telling the user which 
 	std::cout << "Enter a Command" << std::endl;
 	std::cout << "edit, save, new, exit" << std::endl;
 
@@ -176,6 +210,7 @@ void DataBase::edit()
 	}
 }
 
+//saves the players in the database to a save file
 void DataBase::save()
 {
 	std::ofstream out;
@@ -209,6 +244,7 @@ void DataBase::save()
 	system("CLS");
 }
 
+//loads the save file if one exists
 bool DataBase::load()
 {
 	std::ifstream in;
