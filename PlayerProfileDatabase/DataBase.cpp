@@ -160,6 +160,7 @@ void DataBase::getCommand()
 	}
 }
 
+//searches for an inputted profile and allows the user to edit it
 void DataBase::edit()
 {
 	char input[50] = "\0";
@@ -290,6 +291,7 @@ bool DataBase::load()
 	return true;
 }
 
+//creates a new player profle and adds it to the batabase
 void DataBase::newPlayer()
 {
 	char input[50] = "\0";
@@ -315,6 +317,7 @@ void DataBase::newPlayer()
 	addPlayer(newplayer);
 }
 
+//searches the database for the inputted player by name
 int DataBase::binarySearch(char * key)
 {
 	int max = m_playerCount - 1;
