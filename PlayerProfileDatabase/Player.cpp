@@ -27,16 +27,19 @@ Player::Player(char * Name, int score)
 	setScore(score);
 }
 
+//sets the name of the player
 void Player::setName(const char name[30])
 {
 	strcpy_s(m_name, name);
 }
 
+//sets the score of the player
 void Player::setScore(const int score)
 {
 	m_score = score;
 }
 
+//saves the player's name and score
 void Player::save(std::ofstream & out)
 {
 	if (!out.is_open())
@@ -45,6 +48,7 @@ void Player::save(std::ofstream & out)
 	out.write((char*)&m_score, sizeof(int));
 }
 
+//loads the players name and score
 bool Player::load(std::ifstream & in)
 {
 	if (!in.is_open())
