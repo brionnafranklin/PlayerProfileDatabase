@@ -135,24 +135,29 @@ void DataBase::getCommand()
 
 	std::cin >> input;
 
+	//if the user types "save"
 	if (strcmp(input, "save") == 0) 
 	{
 		save();
 		return;
 	}
+	//if the user types "exit"
 	else if (strcmp(input, "exit") == 0) 
 	{
 		gameover = true;
 		return;
 	}
+	//if the user types "edit"
 	else if (strcmp(input, "edit") == 0)
 	{
 		edit();
 	}
+	//if the user types "new"
 	else if (strcmp(input, "new") == 0)
 	{
 		newPlayer();
 	}
+	//if the user types something not listed
 	else
 	{
 		std::cout << "Invalid input" << std::endl;
@@ -169,28 +174,34 @@ void DataBase::edit()
 
 	std::cout << "Enter the name of the player to search for." << std::endl;
 
-	//Clear the input buffer, ready for player input
+	//Clear the input buffer, ready for user input
 	std::cin.clear();
 	std::cin.ignore(std::cin.rdbuf()->in_avail());
 
+	//set what was typed as input
 	std::cin >> input;
 	index = binarySearch(input);
 	if (index != -1) {
 
 		std::cout << m_players[index].m_name << m_players[index].m_score << std::endl;
 
+		//ask the user if they want to changer this profile
 		std::cout << "Would you like to alter this profile (yes/no)" << std::endl;
 		std::cin.clear();
 		std::cin >> input;
 		if (strcmp(input, "yes") == 0)
 		{
+			//ask for new name
 			std::cout << "Choose a new name for this profile " << std::endl;
 			std::cout << "New name:" << std::endl;;
 			std::cin >> input;
+			//change name
 			m_players[index].setName(input);
+			//ask for new score
 			std::cout << "Choose a new score For this profile" << std::endl;
 			std::cout << "New score:";
 			std::cin >> inputint;
+			//change score
 			m_players[index].setScore(inputint);
 			return;
 		}
@@ -200,12 +211,14 @@ void DataBase::edit()
 		}
 		else
 		{
+			//clear and print error message
 			system("CLS");
 			std::cout << "Invalid input" << std::endl;
 		}
 	}
 	else
 	{
+		//clear and print error message
 		system("CLS");
 		std::cout << "Player not found." << std::endl;
 	}
@@ -241,6 +254,7 @@ void DataBase::save()
 	out.flush();
 	out.close();
 
+	//let the user know the program saved correctly
 	std::cout << "Progress has been saved" << std::endl;
 	system("CLS");
 }
@@ -254,7 +268,8 @@ bool DataBase::load()
 	in.open("DataBaseSav.dat", std::ifstream::in | std::ifstream::binary);
 
 	if (!in.is_open()) {
-		std::cout << "loadind unsuscessful" << std::endl;
+		//let the user know the load failed
+		std::cout << "loading unsuscessful" << std::endl;
 		system("pause");
 		return false;
 	}
@@ -275,6 +290,7 @@ bool DataBase::load()
 			delete[] m_tempPlayers;
 			m_tempPlayers = nullptr;
 			return false;
+			//send a error message letting the user know loading failed
 			std::cout << "failure to load";
 			system("pause");
 		}
@@ -284,9 +300,11 @@ bool DataBase::load()
 	m_playerCount = m_tempPlayerCount;
 	m_players = m_tempPlayers;
 
-
+	//let the user know Load was successful
 	std::cout << "Load successful." << std::endl;
+	//wait for user
 	system("pause");
+	//clear
 	system("CLS");
 	return true;
 }
@@ -297,22 +315,25 @@ void DataBase::newPlayer()
 	char input[50] = "\0";
 	int inputint = 0;
 
+	//ask for a new name
 	std::cout << "Enter a name for the player you wish to create." << std::endl;
 
 	//Clear the input buffer, ready for player input
 	std::cin.clear();
 	std::cin.ignore(std::cin.rdbuf()->in_avail());
 
+	//get input
 	std::cin >> input;
 
 	std::cout << "Generating new profile" << std::endl;
 	std::cout << "New Name: " << input << std::endl;
-	//std::cin >> input;
 
+	//ask for score
 	std::cout << "Please choose a new score For this profile" << std::endl;
 	std::cout << "New Score: " << std::endl;
 	std::cin >> inputint;
 
+	//create new player using the inputted name and score
 	Player newplayer(input, inputint);
 	addPlayer(newplayer);
 }
@@ -320,21 +341,26 @@ void DataBase::newPlayer()
 //searches the database for the inputted player by name
 int DataBase::binarySearch(char * key)
 {
+	//set default max and min
 	int max = m_playerCount - 1;
 	int min = 0;
 
 	while (max != min)
 	{
+		//define what the middle is
 		int middle = (min + max) / 2;
+		//if the middle is what we are looking for
 		if (strcmp(m_players[middle].m_name, key) == 0)
 		{
 			return middle;
 		}
+		//if it is smaller
 		else if (strcmp(m_players[middle].m_name, key) > 0)
 		{
 			max = middle - 1;
 
 		}
+		//if it is larger
 		else if (strcmp(m_players[middle].m_name, key) < 0)
 		{
 			min = middle + 1;
