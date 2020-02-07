@@ -1,6 +1,7 @@
 #pragma once
 #include "Player.h"
 
+//Where most of the main functions are declared
 class DataBase
 {
 //declares all the public functions within the DataBase class
@@ -26,25 +27,26 @@ private:
 	//pointer to the players in the database
 	Player* m_players;
 
-	//
+	//takes in input from the user and calls the appropriate
 	void getCommand();
-	//
+	//searches for an inputted profile and allows the user to edit it
 	void edit();
-	//
+	//saves the players in the database to a save file
 	void save();
-	//
+	//loads the save file if one exists
 	bool load();
-	//
+	//creates a new player profle and adds it to the batabase
 	void newPlayer();
-	//
+	//searches the database for the inputted player by name
 	int binarySearch(char * key);
-	//
+	
+	//a bool that returns true when the game is over
 	bool gameover = false;
-	//
+	//an int that represents the length of the array of players
 	int m_playerCount = 1;
-	//
+	//an int that represents the length of the array of players but only temperarily
 	int m_tempPlayerCount = 1;
-	//
+	//pointer to the players in the database thats temperary
 	Player* m_tempPlayers;
 };
 
